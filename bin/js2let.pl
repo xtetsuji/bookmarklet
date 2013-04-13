@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+use Time::Piece;
+
 my $js_filename = shift;
 
 open my $js_fh, '<', $js_filename
@@ -14,18 +16,29 @@ close $js_fh;
 
 # remove comment
 $js_code =~ s{/\*(?!\*).*?\*/}{}sg; # /** ... */ 書式のコメントのみ特別視
-$js_code =~ s{//.*?$}{}mg;
-
-# remove newline
-$js_code =~ s{\n}{ }g;
+# $js_code =~ s{//.*?$}{}mg; "//" は迂闊に消せない
+$js_code =~ s{(?<!:)//.*?$}{}mg; # スキーマに出てくる :// に配慮したつもり
 
 # remove spaces
+$js_code =~ s{^\s+}{}mg; # ^ is \A and (?<=\n) ???
 $js_code =~ s{\s+}{ }g;
 $js_code =~ s{ = }{=}g;
 $js_code =~ s{, }{,}g;
 $js_code =~ s{; }{;}g;
+$js_code =~ s{\s+$}{}mg; # $ is (?=\n) ???
 
-print "javascript:$js_code\n";
+# remove newline
+$js_code =~ s{\n}{ }g;
+
+# for debug
+if ( $js_code =~ /\$Debug-Rev.*?$/ ) {
+    my $now = localtime;
+    my $ymd = $now->ymd("/");
+    my $hms = $now->hms(":");
+    $js_code =~ s{\$Debug-Rev.*?\$}{\$Debug-Rev $ymd $hms\$}g;
+}
+
+print "javascript:$js_code";
 
 =pod
 
@@ -46,11 +59,38 @@ js2let.pl - 非常にルーズなブックマークレット生成ツール
 
 やっていることは、コメント除去、改行除去、空白類文字の圧縮です。
 
+=head1 USEFUL FUNCTION
+
+ /** comment */
+
+この形式のコメントは残します
+
+ $Debug-Rev$
+
+この文字列はRCS IDのように日時文字列に置換されます。
+デバッグ時にスクリプトの末尾に
+
+ /** $Debug-Rev$ */
+
+と入れておくと、いつこのスクリプトで処理した一行ブックマークレットかがわかります。
+
+=haed1 HOW TO USE
+
+Mac であれば pbcopy、UNIX であれば xclip コマンドで処理結果を受け取ると良いでしょう。
+
+  bin/js2let.pl your.js > your.packed.js
+
+  cat your.packed.js | pbcopy ### Mac
+
+  cat your.packed.js | xsel ### UNIX
+
 =head1 LIMITATION
 
 構文解析などは全く行っていません。
 特にB<文字列リテラル中のコメントっぽい文字列(// ..., /* ... */)も壊すことは
 注意してください。
+
+特にURLスキームなどで頻出の :// については対応済みです。
 
 =head1 SEE ALSO
 

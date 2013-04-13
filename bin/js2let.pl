@@ -63,7 +63,7 @@ js2let.pl - 非常にルーズなブックマークレット生成ツール
 
  /** comment */
 
-この形式のコメントは残します
+この形式のコメントは残します。
 
  $Debug-Rev$
 
@@ -83,6 +83,10 @@ Mac であれば pbcopy、UNIX であれば xclip コマンドで処理結果を
   cat your.packed.js | pbcopy ### Mac
 
   cat your.packed.js | xsel ### UNIX
+
+デバッグ時は、普段は /* ... */ 形式のコメントはスクリプト本体では使わずに、
+エラーが起こった場合には冒頭以外全体を /* ... */ で覆いながら、
+エラーが出るところまでコメント領域を狭めていくとよいでしょう。
 
 =head1 LIMITATION
 

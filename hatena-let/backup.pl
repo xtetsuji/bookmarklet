@@ -40,7 +40,8 @@ wq("$LET_BASEURL/$LET_ID/")
 sub save {
     my $filename = shift;
     my $content  = shift;
-    open my $fh, '>:utf8', $filename
+    #open my $fh, '>:utf8', $filename
+    open my $fh, '>', $filename
         or die;
     print {$fh} $content;
     close $fh;

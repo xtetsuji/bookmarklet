@@ -3,5 +3,5 @@ usage:
 	@echo "  make *.packd.js"
 
 %.packed.js: %.js
-	bin/js2let.js $< > $@
+	bin/js2let.pl $< > $@
 

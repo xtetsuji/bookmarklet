@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Time::Piece;
+#use constant HAVE_TIME_PIECE => eval q{use Time::Piece; 1;}; # 安全側に考えなくても世間はPerl5.10以降だよね
 
 my $js_filename = shift;
 
@@ -31,7 +32,7 @@ $js_code =~ s{\s+$}{}mg; # $ is (?=\n) ???
 $js_code =~ s{\n}{ }g;
 
 # for debug
-if ( $js_code =~ /\$Debug-Rev.*?$/ ) {
+if ( $js_code =~ /\$Debug-Rev.*?\$/ ) {
     my $now = localtime;
     my $ymd = $now->ymd("/");
     my $hms = $now->hms(":");
@@ -114,9 +115,17 @@ Mac であれば pbcopy、UNIX であれば xclip コマンドで処理結果を
 
 =head1 CONCEPT
 
-前出の Closure Library も YUI もインストールが面倒な Java を必要とすること、
+前出の Closure も YUI もインストールが面倒な Java を必要とすること、
 また諸処の事情で秘匿が必要なブックマークレットの開発の際に外部
 ウェブサービスを使うことがためらわれること。
+
+=head1 DEPENDENCIES
+
+L<Time::Piece>
+
+Perl5.10 以降ではコアモジュールなので特に気にする必要はないと思います。
+
+see: perl- v
 
 =head1 COPYRIGHT AND LICENSE
 

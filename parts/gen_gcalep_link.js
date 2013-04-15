@@ -4,9 +4,9 @@ var pad = function(digit) {
 },
 to_utcdigit = function(jst) { // String jst
     var date, incl_date=false;
-    if(jst.match(/24:00/)) {
+    if(m=jst.match(/ (2[4-9]):([0-9][0-9])/)) {
         incl_date = true;
-        jst = jst.replace(/24:00/, "00:00"); // TODO: 24:00 以上の表記はあるかな
+        jst = jst.replace(/ 2[4-9]:[0-9][0-9]/, " "+pad(parseInt(m[1])-24)+":"+m[2]);
     }
     //console.log("jst="+jst);
     date = new Date(jst); // valid JST Date string

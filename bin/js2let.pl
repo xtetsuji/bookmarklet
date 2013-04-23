@@ -81,23 +81,34 @@ Mac であれば pbcopy、UNIX であれば xclip コマンドで処理結果を
 
   bin/js2let.pl your.js > your.packed.js
 
-  cat your.packed.js | pbcopy ### Mac
+  ### Mac
+  cat your.packed.js | pbcopy
 
-  cat your.packed.js | xsel ### UNIX
+  ### UNIX
+  cat your.packed.js | xsel --input --clipboardl
+
+  ### Windows Cygwin
+  cat your.packed.js | putclip
 
 デバッグ時は、普段は /* ... */ 形式のコメントはスクリプト本体では使わずに、
 エラーが起こった場合には冒頭以外全体を /* ... */ で覆いながら、
 エラーが出るところまでコメント領域を狭めていくとよいでしょう。
 
+参考: L<http://mollifier.hatenablog.com/entry/20100317/p1>
+
 =head1 LIMITATION
 
 構文解析などは全く行っていません。
-特にB<文字列リテラル中のコメントっぽい文字列(// ..., /* ... */)も壊すことは
-注意してください。
+特にB<文字列リテラル中のコメントっぽい文字列(// ..., /* ... */)も壊す>
+ことは注意してください。
 
 特にURLスキームなどで頻出の :// については対応済みです。
 
 =head1 SEE ALSO
+
+JavaScript をminify/packedもできる統合開発環境はいくつもあります。
+Javaの導入が済んでいたり、これらのインストールに特段の障害がなければ
+こちらを使うほうがおすすめです。
 
 =over
 
@@ -124,6 +135,8 @@ Mac であれば pbcopy、UNIX であれば xclip コマンドで処理結果を
 L<Time::Piece>
 
 Perl5.10 以降ではコアモジュールなので特に気にする必要はないと思います。
+
+Mac OS X の場合、付属の perl は 5.10 系なので特に問題ないはずです。
 
 see: perl- v
 

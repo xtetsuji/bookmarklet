@@ -4,11 +4,20 @@ use strict;
 use warnings;
 use utf8;
 
+use Getopt::Long;
 use Web::Query;
 
 use constant HAVE_HTTP_TINY  => eval q{require HTTP::Tiny; 1;};
 use constant HAVE_LWP_SIMPLE => eval q{require LWP::Simple; 1;};
 # TODO: Is need to support Furl?
+# TODO: Is need to HTTP proxy support?
+
+# my $p = Getopt::Long::Parser->new(
+#     config => [qw(posix_default no_ignore_case auto_help)]
+# );
+# $p->getoptions(
+#     'env-proxy!' => \my $env_proxy,
+# );
 
 my $LET_BASEURL = "http://let.hatelabo.jp";
 my $LET_ID      = $ARGV[0] || "xtetsuji" ;
@@ -24,7 +33,7 @@ wq("$LET_BASEURL/$LET_ID/")
        my $i = shift;
        my $href = $_->attr('href');
        printf "backup: %2d %s\n", $i+1, $href;
-       my $url_base = "$LET_BASEURL/" . $href;
+       my $url_base = "$LET_BASEURL/$href";
        ( my $key = $href ) =~ s{.*/}{};
        for my $ext (qw(.js .packed.js .metadata.json)) {
            my $content = get("$url_base$ext");
@@ -51,10 +60,10 @@ sub get {
     my $url = shift;
     if ( HAVE_HTTP_TINY ) {
         my $response = HTTP::Tiny->new->get($url);
-        return $response->{success} && $response->{content};
+        return $response->{success} && $response->{content} || '';
     }
     elsif ( HAVE_LWP_SIMPLE ) {
-        return get($url);
+        return LWP::Simple::get($url);
     }
 }
 

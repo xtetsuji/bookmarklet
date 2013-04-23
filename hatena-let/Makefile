@@ -3,7 +3,7 @@ usage:
 	@echo "  make backup"
 	@echo "  make clean"
 	@echo ""
-	@echo "  see \"perldoc backup.pl\" for backup dettail."
+	@echo "  see \"perldoc backup.pl\" for backup detail."
 
 backup:
 	perl backup.pl

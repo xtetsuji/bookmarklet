@@ -24,7 +24,7 @@ var to_utcdigit = function(jst) { // String jst
 var gen_gcalep_link = function(arg) {
     // args: text, url, desc, location,
     //       from, to (valid string as Date object constructor 1st argument)
-    if(DEBUG){console.log("gen_gcalep_lin argument", arg);}
+    if(DEBUG){console.log("gen_gcalep_link argument", arg);}
     var gparam = {};
     var gparam_array = [];
     var gparam_keys = ["action", "text", "dates", "sprop", "details", "location"];

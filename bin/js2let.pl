@@ -3,10 +3,20 @@
 use strict;
 use warnings;
 
+use Getopt::Long qw(:config posix_default no_ignore_case bundling auto_help);
+use Pod::Usage qw(pod2usage);
 use Time::Piece;
 #use constant HAVE_TIME_PIECE => eval q{use Time::Piece; 1;}; # 安全側に考えなくても世間はPerl5.10以降だよね
 
+GetOptions(
+    \my %options, "wrap", "clipboard"
+);
+
 my $js_filename = shift;
+
+if ( !$js_filename || !-f $js_filename ) {
+    pod2usage();
+}
 
 open my $js_fh, '<', $js_filename
     or die $!;
@@ -39,7 +49,14 @@ if ( $js_code =~ /\$Debug-Rev.*?\$/ ) {
     $js_code =~ s{\$Debug-Rev.*?\$}{\$Debug-Rev $ymd $hms\$}g;
 }
 
-print "javascript:$js_code";
+my $url = sprintf "javascript:%s", $options{wrap} ? "(function(){$js_code})()" : $js_code;
+
+print $url, "\n";
+
+if ( $options{clipboard} ) {
+    print "pbcopy\n";
+    system qq{pbcopy <<<"$url"};
+}
 
 =pod
 
@@ -51,7 +68,7 @@ js2let.pl - 非常にルーズなブックマークレット生成ツール
 
 =head1 SYNOPSIS
 
-  bin/js2let.pl JavaScriptファイル名
+  bin/js2let.pl [--wrap] [--clipboard] JavaScriptファイル名
 
 ファイルは通常のJavaScriptファイルです。
 標準出力に一行のブックマークレットを出力します
@@ -95,6 +112,20 @@ Mac であれば pbcopy、UNIX であれば xclip コマンドで処理結果を
 エラーが出るところまでコメント領域を狭めていくとよいでしょう。
 
 参考: L<http://mollifier.hatenablog.com/entry/20100317/p1>
+
+=head1 OPTIONS
+
+=over
+
+=item * --wrap
+
+圧縮結果を (function(){...})() でくくります
+
+=item * --clipboard
+
+出力と同時にクリップボードにも結果を入れます
+
+=back
 
 =head1 LIMITATION
 

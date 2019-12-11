@@ -1,19 +1,19 @@
-#Bookmarklet!
+# Bookmarklet!
 
 \(Do you want English description? Please reply to [@xtetsuji](https://twitter.com/xtetsuji)\)
 
-##説明
+## 説明
 
 OGATA Tetsuji \([@xtetsuji](https://twitter.com//xtetsuji)\) のブックマークレット関連ツールです。
 
 実際のブックマークレットは[Hatena::Letのid:xtetsujiページ](http://let.hatelabo.jp/xtetsuji/)で管理しています。[Hatena::Let](http://let.hatelabo.jp/)はhatelaboのサービスではありますが、開発から公開、そして提供まで非常に便利なサイトでオススメです。
 
-##簡単な開発ツールの説明
+## 簡単な開発ツールの説明
 
 Maekfile があるので make 経由でも起動することができます。
 make の知識がある人はこっちのほうが便利かも。
 
-###bin/js2let.pl
+### bin/js2let.pl
 
 非常に単純な処理で複数行のJavaScriptを一行に変換します。
 
@@ -26,7 +26,7 @@ make の知識がある人はこっちのほうが便利かも。
 
 Perl5.10以降であれば依存関係はありません。例えばMac OS X Mountain Lion のシステムPerlはPerl5.10。see: `perl -v`。
 
-###hatena-let/backup.pl
+### hatena-let/backup.pl
 
 Hatena::Let のバックアップをします。引数がなければ私 id:xtetsuji のバックアップをとってしまうので、スクリプトを変更するか引数を渡してください。
 
@@ -44,12 +44,12 @@ Hatena::Let のバックアップをします。引数がなければ私 id:xtet
 そういった場合の考慮を(2013/04/14現在)していないので、
 もし不都合があったらお知らせください。
 
-###parts/
+### parts/
 
 ブックマークレットに利用できそうな部品置き場です。
 まだ少ないですが、今後少しずつ増やしていきます。
 
-##ライセンス (LICENSE)
+## ライセンス (LICENSE)
 
 スクリプト中で指定がない場合のライセンスは **MITライセンス** とします。
 
